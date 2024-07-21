@@ -7,3 +7,5 @@ users_avatars*
 *.sqlite
 tg_parser_on_fler.iml
 *.zip
+*.docx
+*.iml
