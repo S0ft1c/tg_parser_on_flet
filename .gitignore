@@ -1,0 +1,9 @@
+.idea
+output
+photos
+users_avatars*
+*.session
+.env
+*.sqlite
+tg_parser_on_fler.iml
+*.zip
