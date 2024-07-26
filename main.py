@@ -1,16 +1,17 @@
 import asyncio
+import datetime as dt
+import os
+import shutil
+
+import flet as ft
+from dotenv import load_dotenv
+from telethon import TelegramClient
+from telethon.tl.functions.channels import GetFullChannelRequest, JoinChannelRequest, LeaveChannelRequest
+from telethon.tl.functions.contacts import SearchRequest
+from telethon.tl.types import PeerChannel, PeerChat
 
 import tmpls
 from db import AsyncSQLiteSessionDB
-import os
-import shutil
-from dotenv import load_dotenv
-import flet as ft
-import datetime as dt
-from telethon import TelegramClient
-from telethon.tl.functions.contacts import SearchRequest
-from telethon.tl.functions.channels import GetFullChannelRequest, JoinChannelRequest, LeaveChannelRequest
-from telethon.tl.types import PeerChannel, PeerChat
 
 # Configuring the api's
 load_dotenv()
@@ -159,6 +160,7 @@ async def main(page: ft.Page):
 
     async def home_view(e: ft.ControlEvent = None):
         async def on_click_parse_entity(e: ft.ControlEvent):
+            idididid = e.control.id
             selected_session = page.session.get('selected_session')
             client = TelegramClient(selected_session, api_id=API_ID, api_hash=API_HASH, system_version=SYSTEM_VERSION)
             await client.connect()
@@ -172,12 +174,13 @@ async def main(page: ft.Page):
             await asyncio.sleep(5)
 
             # for all the information
-            users_info_file = open(f'output/users_info_{dt.datetime.now()}.txt', 'a+')
-            messages_info_file = open(f'output/messages_info_{dt.datetime.now()}.txt', 'a+')
+            users_info_file = open(f'output/users_info_{dt.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")}.txt', 'a+')
+            messages_info_file = open(f'output/messages_info_{dt.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")}.txt',
+                                      'a+')
             # for remembering what users was captured
             users_was_set = set()
             # the path for the result
-            result_dir = f'users_avatars_{dt.datetime.now()}/' if not page.session.get(
+            result_dir = f'users_avatars_{dt.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")}/' if not page.session.get(
                 'result_dir') else page.session.get('result_dir') + '/'
 
             cnt = 0
@@ -241,7 +244,7 @@ async def main(page: ft.Page):
             view.controls.remove(cnt_parsing_text)
             page.update()
             await asyncio.sleep(5)
-            await client(LeaveChannelRequest(e.control.id))
+            await client(LeaveChannelRequest(idididid))
             await client.disconnect()
 
         async def on_click_search(e: ft.ControlEvent):
